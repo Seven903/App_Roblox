@@ -1,75 +1,146 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+  Pressable,
+  Linking,
+} from "react-native";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+export default function App() {
+  let [t1, t2] = ["Termos", "Privacidade"];
 
-export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <ImageBackground
+        style={styles.imagem}
+        source={require("..//../assets/images/roblox.jpg")}
+        resizeMode="cover"
+      >
+        <View style={styles.topo}>
+          <Text style={styles.texto}>ROBLOX</Text>
+        </View>
+        <View style={styles.areaBotoes}>
+          <TouchableOpacity style={styles.botao}>
+            <Text style={styles.textoBotao}>Cadastrar-se</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.botao, styles.botaotrans]}>
+            <Text style={[styles.textoBotao, styles.textoBotaoTrans]}>
+              Iniciar sessão
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.links}>
+          <Pressable
+            onPress={() =>
+              Linking.openURL(
+                "https://en.help.roblox.com/hc/en-us/articles/115004647846-Roblox-Terms-of-Use"
+              )
+            }
+          >
+            <Text style={styles.textoLink}>{t1}</Text>
+          </Pressable>
+          <Text style={styles.espaco}>-</Text>
+          <Pressable
+            onPress={() =>
+              Linking.openURL(
+                "https://en.help.roblox.com/hc/en-us/articles/115004630823-Roblox-Privacy-and-Cookie-Policy"
+              )
+            }
+          >
+            <Text style={styles.textoLink}>{t2}</Text>
+          </Pressable>
+        </View>
+      </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    // borderWidth: 5,
+    // borderColor: "green",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  texto: {
+    fontWeight: "bold",
+    fontSize: 55,
+    color: "#ffffffff",
+    letterSpacing: 5,
+    // borderWidth: 5,
+    // borderColor: "red",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  imagem: {
+    flex: 1,
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    // borderWidth: 5,
+    // borderColor: "red",
+  },
+  botao: {
+    backgroundColor: "#FFF",
+    width: "100%",
+    height: 45,
+
+    marginTop: 10,
+    justifyContent: "center",
+    borderRadius: 8,
+  },
+  topo: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    // borderWidth: 5,
+  },
+  areaBotoes: {
+    flex: 1,
+    justifyContent: "flex-end",
+    marginBottom: 55,
+    // borderWidth: 5,
+    width: "95%",
+    alignItems: "center",
+  },
+
+  textoBotao: {
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#5c5757ff",
+  },
+  botaotrans: {
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    borderWidth: 1,
+    borderColor: "#FFF",
+  },
+  textoBotaoTrans: {
+    color: "#9e9b9bff",
+  },
+  links: {
+    // borderWidth: 5,
+    // borderColor: "purple",
+    position: "absolute",
+    flex: 1,
+    flexDirection: "row",
+    width: "100%",
+    top: 600,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 0,
+  },
+  textoLink: {
+    color: "#59a9e4",
+    fontSize: 18,
+    fontWeight: "bold",
+    paddingRight: 7,
+    paddingLeft: 5,
+    textDecorationLine: "underline",
+  },
+  espaco: {
+    color: "#FFF",
+    fontSize: 25,
   },
 });
