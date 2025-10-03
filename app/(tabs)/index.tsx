@@ -1,3 +1,5 @@
+
+import { router } from "expo-router";
 import {
   View,
   Text,
@@ -7,6 +9,9 @@ import {
   Pressable,
   Linking,
 } from "react-native";
+
+
+
 
 export default function App() {
   let [t1, t2] = ["Termos", "Privacidade"];
@@ -18,11 +23,12 @@ export default function App() {
         source={require("..//../assets/images/roblox.jpg")}
         resizeMode="cover"
       >
+        <View style={styles.overlay} />
         <View style={styles.topo}>
           <Text style={styles.texto}>ROBLOX</Text>
         </View>
         <View style={styles.areaBotoes}>
-          <TouchableOpacity style={styles.botao}>
+          <TouchableOpacity onPress={() => router.push("/(tabs)/SingnScreen")} style={styles.botao}>
             <Text style={styles.textoBotao}>Cadastrar-se</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.botao, styles.botaotrans]}>
@@ -56,6 +62,7 @@ export default function App() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -100,7 +107,8 @@ const styles = StyleSheet.create({
   areaBotoes: {
     flex: 1,
     justifyContent: "flex-end",
-    marginBottom: 55,
+    marginBottom: 65,
+    paddingBottom:10,
     // borderWidth: 5,
     width: "95%",
     alignItems: "center",
@@ -126,7 +134,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     width: "100%",
-    top: 600,
+    top: 690,
     justifyContent: "center",
     alignItems: "center",
     padding: 0,
@@ -142,5 +150,9 @@ const styles = StyleSheet.create({
   espaco: {
     color: "#FFF",
     fontSize: 25,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(24,24,24,0.5)",
   },
 });
