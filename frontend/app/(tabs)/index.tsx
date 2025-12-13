@@ -1,6 +1,5 @@
 import Background from "@/components/Brackground";
 import Title from "@/components/Title";
-import { useFonts } from "expo-font";
 import Botoes from "@/components/Botao";
 import Links, { link1, link2 } from "@/components/Link";
 import { View, StyleSheet } from "react-native";

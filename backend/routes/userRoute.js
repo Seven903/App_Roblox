@@ -1,10 +1,10 @@
 const express = require("express");
-const route = express.Router();
+const userRoute = express.Router();
 const usuarioControlle = require("../controllers/userController");
 
-route.post("/", usuarioControlle.inserirUsuario);
-route.get("/", usuarioControlle.listarUsuarios);
-route.get("/:id", usuarioControlle.listarUsuariosId);
-route.put("/:id", usuarioControlle.atualizarUsuario);
+userRoute.post("/", usuarioControlle.inserirUsuario);
+userRoute.get("/", usuarioControlle.listarUsuarios);
+userRoute.get("/:id", usuarioControlle.listarUsuariosId);
+userRoute.put("/:id", usuarioControlle.atualizarUsuario);
 
-module.exports = route;
+module.exports = userRoute;

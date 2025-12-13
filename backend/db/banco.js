@@ -13,7 +13,8 @@ db.run(
     CREATE TABLE IF NOT EXISTS Usuario(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL
+    password VARCHAR(50) NOT NULL,
+    dataNascimento DATE NOT NULL
     )
     `,
   (err) => {

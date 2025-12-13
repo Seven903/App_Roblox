@@ -1,16 +1,22 @@
-import { TextInput, StyleSheet,} from "react-native";
+import { TextInput, StyleSheet } from "react-native";
 import { useState } from "react";
 
 type Formprops = {
   place: string;
   placeColor: string;
-  escodertexto? :boolean;
+  onChangeText?: (text: string) => void;
+  escodertexto?: boolean;
   style?: object;
 };
 
-export default function Input({ place, placeColor,escodertexto, style }: Formprops) {
-
-  const [foco,setfoco] = useState(false)
+export default function Input({
+  place,
+  placeColor,
+  escodertexto,
+  style,
+  onChangeText,
+}: Formprops) {
+  const [foco, setfoco] = useState(false);
 
   return (
     <TextInput
@@ -19,9 +25,10 @@ export default function Input({ place, placeColor,escodertexto, style }: Formpro
       placeholder={place}
       placeholderTextColor={placeColor}
       textAlignVertical="center"
-      secureTextEntry ={escodertexto}
-      onFocus={()=> setfoco(true)}
-      onBlur={()=> setfoco(false)}
+      secureTextEntry={escodertexto}
+      onFocus={() => setfoco(true)}
+      onChangeText={onChangeText}
+      onBlur={() => setfoco(false)}
     ></TextInput>
   );
 }
@@ -42,6 +49,6 @@ const styles = StyleSheet.create({
   },
   foco: {
     borderColor: "#fff",
-    borderWidth: 1
-  }
+    borderWidth: 1,
+  },
 });

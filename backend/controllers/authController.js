@@ -7,7 +7,7 @@ const SECRET_KEY = process.env.JWT_SECRET || "meusegredo"
 
 exports.login = (req, res) => {
 
-  const { userlog, passwordlog } = req.body;
+  const { userlog, passwordlog} = req.body;
 
   let query = `SELECT * FROM Usuario WHERE user = ? `;
 
@@ -27,7 +27,7 @@ exports.login = (req, res) => {
     }else{
         const token = jwt.sign({id: usuario.id, user: usuario.user},SECRET_KEY,{expiresIn: "1h"})
 
-        res.status(201).json({token})
+       return res.status(201).json({token})
     }
   });
 };

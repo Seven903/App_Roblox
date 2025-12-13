@@ -26,31 +26,48 @@ exports.listarUsuariosId = (req, res) => {
 };
 
 exports.inserirUsuario = async (req, res) => {
-  const { user, password } = req.body;
-  let query = `INSERT INTO Usuario (user, password) VALUES (?,?)`;
+  const { user, password, dataNascimento } = req.body;
+  let query = `INSERT INTO Usuario (user, password, dataNascimento) VALUES (?,?,?)`;
   const salt = 9;
+  if (
+    !user ||
+    user.trim() === "" ||
+    !password ||
+    password.trim() === "" ||
+    !dataNascimento ||
+    dataNascimento.trim() === ""
+  ) {
+    return res.status(400).json({ msg: "Preecha os campo corretamente" });
+  }
 
+  const data = new Date(dataNascimento);
+
+  if (isNaN(data.getTime())) {
+    return res.status(400).json({
+      erro: "Data de nascimento inválida",
+    });
+  }
   const hash = await bcrypt.hash(password, salt);
 
-  db.run(query, [user, hash], function (err) {
+  db.run(query, [user, hash, data], function (err) {
     if (err) {
       return res.status(500).json({ msg: err.message });
     }
-    res.json({ msg: "Usuario criado com sucesso!", id: this.lastID });
+    return res.json({ msg: "Usuario criado com sucesso!", id: this.lastID });
   });
 };
 
 exports.atualizarUsuario = async (req, res) => {
   const id = req.params.id;
-  const {user,password} = req.body;
+  const { user, password } = req.body;
   const salt = 9;
-  const hash = await bcrypt.hash(password,salt);
+  const hash = await bcrypt.hash(password, salt);
   let query = `UPDATE Usuario SET user = ? , password = ? WHERE id= ?`;
 
-  db.run(query, [user,hash,id], (err) => {
+  db.run(query, [user, hash, id], (err) => {
     if (err) {
       return res.status(500).json({ msg: err.message });
     }
-    res.json({ msg: "Usuario atualizado com sucesso" });
+    return res.json({ msg: "Usuario atualizado com sucesso" });
   });
 };
