@@ -34,7 +34,6 @@ function verifyTokenAndSetUser(req, res, next) {
       req.user = {
         id: user.id,
         usuario: user.user,
-        dataNascimento: user.dataNascimento,
       };
       return next();
     });

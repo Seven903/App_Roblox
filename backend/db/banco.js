@@ -14,7 +14,8 @@ db.run(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user VARCHAR(50) NOT NULL,
     password VARCHAR(50) NOT NULL,
-    dataNascimento DATE NOT NULL
+    dataNascimento VARCHAR(20) NOT NULL,
+    genero VARCHAR(20)
     )
     `,
   (err) => {

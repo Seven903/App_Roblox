@@ -26,8 +26,8 @@ exports.listarUsuariosId = (req, res) => {
 };
 
 exports.inserirUsuario = async (req, res) => {
-  const { user, password, dataNascimento } = req.body;
-  let query = `INSERT INTO Usuario (user, password, dataNascimento) VALUES (?,?,?)`;
+  const { user, password, dataNascimento , genero } = req.body;
+  let query = `INSERT INTO Usuario (user, password, dataNascimento, genero) VALUES (?,?,?,?)`;
   const salt = 9;
   if (
     !user ||
@@ -35,21 +35,15 @@ exports.inserirUsuario = async (req, res) => {
     !password ||
     password.trim() === "" ||
     !dataNascimento ||
-    dataNascimento.trim() === ""
+   dataNascimento.trim() === ""
   ) {
     return res.status(400).json({ msg: "Preecha os campo corretamente" });
   }
 
-  const data = new Date(dataNascimento);
 
-  if (isNaN(data.getTime())) {
-    return res.status(400).json({
-      erro: "Data de nascimento inválida",
-    });
-  }
   const hash = await bcrypt.hash(password, salt);
 
-  db.run(query, [user, hash, data], function (err) {
+  db.run(query, [user, hash, dataNascimento,genero], function (err) {
     if (err) {
       return res.status(500).json({ msg: err.message });
     }

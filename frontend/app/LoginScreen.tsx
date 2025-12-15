@@ -1,9 +1,11 @@
 import { View, StyleSheet,} from "react-native";
 import Background from "@/components/Brackground";
 import Title from "@/components/Title";
+import { router } from "expo-router";
 import FormLog from "@/components/FormLog";
 
-export let back = require("..//../assets/images/roblox.jpg");
+export const back = require("../assets/images/roblox.jpg");
+
 
 
 export default function Login() {
@@ -14,7 +16,9 @@ export default function Login() {
           <Title textContent="ROBLOX" />
         </View>
 
-        <FormLog />
+        <FormLog onLoginSucess={()=>{
+            router.replace("/home");
+        }}/>
       </Background>
     </View>
   );

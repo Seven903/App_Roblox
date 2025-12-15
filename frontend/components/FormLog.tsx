@@ -3,13 +3,43 @@ import MeuBotao from "./MeuBotao";
 import Input from "./Input";
 import { useState } from "react";
 import Links from "./Link";
+import { saveToken } from "@/src/services/auth";
 
 let icon = require("../assets/images/olhoon.png");
 let icon2 = require("../assets/images/olhoof.png");
 
-export default function FormLog() {
+type Loginprops = {
+  onLoginSucess?:()=> void;
+};
+
+export default function FormLog({ onLoginSucess }: Loginprops) {
   const [icono, seticon] = useState(icon);
   const [texto, settexto] = useState(true);
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+
+  const buscarapi = async () => {
+    const usuario = {
+      userlog: user,
+      passwordlog: password,
+    };
+
+    const response = await fetch("http://192.168.0.102:3000/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(usuario),
+    });
+
+    if (!response.ok) {
+      alert("Login inválido");
+      return;
+    }
+    const date = await response.json();
+    await saveToken(date.token);
+    onLoginSucess?.();
+
+    console.log(`Resposata: ${JSON.stringify(date)}`);
+  };
 
   return (
     <View style={styles.container}>
@@ -18,6 +48,7 @@ export default function FormLog() {
           style={styles.inp}
           place="Usuario/e-mail/telefone"
           placeColor="#747776"
+          onChangeText={setUser}
         />
         <View>
           <Input
@@ -25,6 +56,7 @@ export default function FormLog() {
             place="Senha"
             placeColor="#747776"
             escodertexto={texto}
+            onChangeText={setPassword}
           />
           <TouchableOpacity
             onPress={() => {
@@ -41,7 +73,7 @@ export default function FormLog() {
           </TouchableOpacity>
         </View>
         <View style={styles.botoes}>
-          <MeuBotao style={styles.bt} texto="Entrar" />
+          <MeuBotao style={styles.bt} texto="Entrar" onPress={buscarapi} />
           <MeuBotao
             style={{ opacity: 0.5 }}
             texto="Entrar com outro dispositivo"
@@ -69,20 +101,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   formulario: {
-  width: 350,
-  minHeight: 490,
-  borderRadius: 10,
-  padding: 20,
-  marginTop: 80,
-
-},
+    width: 350,
+    minHeight: 490,
+    borderRadius: 10,
+    padding: 20,
+    marginTop: 80,
+  },
   inp: {
     marginBottom: 35,
     height: 36,
   },
- botoes: {
-  marginTop: 10,
-},
+  botoes: {
+    marginTop: 10,
+  },
   bt: {
     marginBottom: 25,
     opacity: 0.6,

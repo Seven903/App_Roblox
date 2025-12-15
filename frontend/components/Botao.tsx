@@ -2,7 +2,12 @@ import { View, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import MeuBotao from "./MeuBotao";
 
-export default function Botoes() {
+type botaoProps = {
+  onLogin?: () => void;
+  onSign?: () => void;
+};
+
+export default function Botoes({ onLogin, onSign }: botaoProps) {
   return (
     <View style={styles.areaBotoes}>
       <MeuBotao

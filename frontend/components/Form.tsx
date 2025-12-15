@@ -20,20 +20,24 @@ let icon5 = require("../assets/images/man.png");
 let icon6 = require("../assets/images/girl.png");
 let icon7 = require("../assets/images/woman.png");
 
-export default function Formulario() {
+type Formprops = {
+  onSucess?: () => void;
+};
+
+export default function Formulario({ onSucess }: Formprops) {
   const [icono, seticon] = useState(icon2);
   const [texto, settexto] = useState(true);
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
-
   const buscarApi = async () => {
     const usuario = {
       user: user,
       password: password,
       dataNascimento: dataNascimento,
+      genero: gen,
     };
-    if (!user.trim() || !password.trim() || dataNascimento.trim()) {
+    if (!user.trim() || !password.trim() || !dataNascimento.trim()) {
       Alert.alert("Erro", "Preencha todos os campos");
       return;
     }
@@ -43,7 +47,11 @@ export default function Formulario() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(usuario),
     });
-
+    if (!resposta.ok) {
+      Alert.alert("Erro ao cadastrar");
+      return;
+    }
+    onSucess?.();
     const data = await resposta.json();
     console.log("Resposta: " + JSON.stringify(data));
   };

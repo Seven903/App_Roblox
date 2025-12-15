@@ -1,6 +1,7 @@
 import { View, StyleSheet } from "react-native";
 import Title from "@/components/Title";
 import Formulario from "@/components/Form";
+import { router } from "expo-router";
 
 export default function SignScreen() {
   return (
@@ -9,7 +10,9 @@ export default function SignScreen() {
         <Title textContent="Cadastrar-se" style={styles.titulo} />
         <View style={styles.linha} />
       </View>
-      <Formulario />
+      <Formulario onSucess={()=>{
+        router.replace("/LoginScreen" );
+      }} />
       <View style={styles.linha} />
     </View>
   );
