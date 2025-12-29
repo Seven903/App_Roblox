@@ -1,5 +1,5 @@
-const express = require("express")
-const authControll = require("../controllers/authController")
+import express from "express";
+import login from "../controllers/authController.js";
 
 const authRoute = express.Router();
 
@@ -7,7 +7,7 @@ authRoute.get("/",(req,res)=>{
     res.json({ok: true})
 })
 
-authRoute.post("/",authControll.login);
+authRoute.post("/",login);
 
 
-module.exports = authRoute;
+export default authRoute;

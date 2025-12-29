@@ -1,9 +1,10 @@
-const exporess = require("express");
-const { isAuthenticated } = require("../middleware/authMiddleware");
+import exporess from "express";
+import  isAuthenticated  from "../middleware/authMiddleware.js";
 
-const profileController = require("../controllers/profileController");
+import perfil from "../controllers/profileController.js";
 
 const profileRoute = exporess.Router();
 
-profileRoute.get("/", isAuthenticated, profileController.perfil);
-module.exports = profileRoute;
+profileRoute.get("/", isAuthenticated.isAuthenticated, perfil);
+
+export default profileRoute;

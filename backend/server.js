@@ -1,23 +1,31 @@
-const express = require("express");
-
-const { verifyTokenAndSetUser } = require("./middleware/authMiddleware");
+import express from "express";
+import sequelize from "./db/banco.js";
+import  verifyTokenAndSetUser  from "./middleware/authMiddleware.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
+app.use(verifyTokenAndSetUser.verifyTokenAndSetUser);
 
-app.use(verifyTokenAndSetUser);
-
-const authRoute = require("./routes/authRoute");
-const profileRoute = require("./routes/profileRoute");
-const userRoute = require("./routes/userRoute");
+import authRoute  from "./routes/authRoute.js";
+import profileRoute from "./routes/profileRoute.js";
+import userRoute from "./routes/userRoute.js";
 
 app.use("/", authRoute);
 app.use("/usuario", userRoute);
 app.use("/login", authRoute);
 app.use("/perfil", profileRoute);
 
-app.listen(PORT, () => {
-  console.log("Servidor rodando na porta 3000");
-});
+(async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync({ alter: true });
+    console.log("Banco conectado com sucesso");
+    app.listen(PORT, () => {
+      console.log(`Servidor rodando na porta: ${PORT}`);
+    });
+  } catch (err) {
+    console.log("Erro ao Conectar ", err);
+  }
+})();

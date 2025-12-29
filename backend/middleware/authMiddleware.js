@@ -1,10 +1,11 @@
-const db = require("../db/banco");
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
+import User from "../models/User.js";
+import dotenv from "dotenv";
+dotenv.config();
+import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.JWT_SECRET;
 
-function verifyTokenAndSetUser(req, res, next) {
+const verifyTokenAndSetUser = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -23,32 +24,29 @@ function verifyTokenAndSetUser(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
-    let query = `SELECT id , user FROM Usuario WHERE id = ?`;
-
-    db.get(query, [decoded.id], (err, user) => {
-      if (err || !user) {
-        req.user = null;
-        return next();
-      }
-
-      req.user = {
-        id: user.id,
-        usuario: user.user,
-      };
+    const usuario = await User.findByPk(decoded.id);
+    if (!usuario) {
+      req.user = null;
       return next();
-    });
+    }
+
+    req.user = {
+      id: usuario.id,
+      usuario: usuario.user,
+    };
+    return next();
   } catch (err) {
     req.user = null;
     return next();
   }
-}
+};
 
-function isAuthenticated(req, res, next) {
+const isAuthenticated = (req, res, next) => {
   if (req.user) {
     return next();
   }
 
   return res.status(401).json({ error: "Não autenticado" });
-}
+};
 
-module.exports = { verifyTokenAndSetUser, isAuthenticated };
+export default { verifyTokenAndSetUser, isAuthenticated };

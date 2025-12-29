@@ -1,35 +1,38 @@
-const db = require("../db/banco");
-require("dotenv").config();
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import User from "../models/User.js";
+import dotenv from "dotenv";
+dotenv.config();
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.JWT_SECRET || "meusegredo";
 
-exports.login = (req, res) => {
-  const { userlog, passwordlog } = req.body;
- 
-  let query = `SELECT * FROM Usuario WHERE user = ? `;
+const login = async (req, res) => {
+  try {
+    const { userlog, passwordlog } = req.body;
 
-  db.get(query, [userlog], async (err, usuario) => {
-    if (err) {
-      return res.status(500).json({ msg: err });
-    }
+    const usuario = await User.findOne({
+      where: {
+        user: userlog,
+      },
+    });
     if (!usuario) {
-      return res.status(404).json({ msg: "Usuario nao encontrado" });
+      return res.status(404).json({ msg: "Usuario não encontrado" });
     }
+    const validarSenha = await bcrypt.compare(passwordlog, usuario.password);
 
-    let conferirsenha = await bcrypt.compare(passwordlog, usuario.password);
-
-    if (!conferirsenha) {
-      return res.status(403).json({ msg: "Usuario ou senha invalida" });
-    } else {
-      const token = jwt.sign(
-        { id: usuario.id, user: usuario.user },
-        SECRET_KEY,
-        { expiresIn: "1h" }
-      );
-
-      return res.status(201).json({ token });
+    if (!validarSenha) {
+      return res.status(403).json({ msg: "Dados Incorretos!" });
     }
-  });
+    const token = jwt.sign(
+      { id: usuario.id, usuario: usuario.user },
+      SECRET_KEY,
+      { expiresIn: "1hr" }
+    );
+    return res.json(token);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ msg: "Erro no servidor" });
+  }
 };
+
+export default login;

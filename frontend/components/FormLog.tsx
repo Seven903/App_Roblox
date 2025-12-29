@@ -24,7 +24,7 @@ export default function FormLog({ onLoginSucess }: Loginprops) {
       passwordlog: password,
     };
 
-    const response = await fetch("http://192.168.0.102:3000/login", {
+    const response = await fetch("http://192.168.0.103:3000/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(usuario),
@@ -35,7 +35,7 @@ export default function FormLog({ onLoginSucess }: Loginprops) {
       return;
     }
     const date = await response.json();
-    await saveToken(date.token);
+    await saveToken(date);
     onLoginSucess?.();
 
     console.log(`Resposata: ${JSON.stringify(date)}`);
