@@ -42,7 +42,7 @@ export default function Formulario({ onSucess }: Formprops) {
       return;
     }
 
-    const resposta = await fetch("http://192.168.0.103:3000/usuario", {
+    const resposta = await fetch("http://192.168.0.101:3000/usuario", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(usuario),

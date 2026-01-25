@@ -11,24 +11,24 @@ import { getToken } from "../src/services/auth";
 export let back = require("../assets/images/roblox.jpg");
 
 export default function App() {
-  const [checkingAuth, setCheckingAuth] = useState(true); // controla checagem de token
+  const [checkingAuth, setCheckingAuth] = useState(true); 
   const router = useRouter();
 
   useEffect(() => {
     async function checkAuth() {
       const token = await getToken();
       if (token) {
-        // usuário já logado → vai direto para Home
+        
         router.replace("/home");
       } else {
-        // não tem token → mostra tela inicial
+        
         setCheckingAuth(false);
       }
     }
     checkAuth();
   }, [router]);
 
-  // enquanto checa token → não renderiza nada
+  
   if (checkingAuth) return null;
 
   return (
@@ -38,7 +38,7 @@ export default function App() {
           <Title textContent="ROBLOX" />
         </View>
 
-        {/* Botões com navegação para Login / Cadastro */}
+        
         <Botoes
           onLogin={() => router.push("/LoginScreen")}
           onSign={() => router.push("/SingnScreen")}

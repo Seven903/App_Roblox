@@ -1,10 +1,13 @@
-import exporess from "express";
-import  isAuthenticated  from "../middleware/authMiddleware.js";
+import express from "express";
+import {
+  isAuthenticated,
+  verifyTokenAndSetUser,
+} from "../middleware/authMiddleware.js";
 
 import perfil from "../controllers/profileController.js";
 
-const profileRoute = exporess.Router();
+const profileRoute = express.Router();
 
-profileRoute.get("/", isAuthenticated.isAuthenticated, perfil);
+profileRoute.get("/perfil", verifyTokenAndSetUser, isAuthenticated, perfil);
 
 export default profileRoute;

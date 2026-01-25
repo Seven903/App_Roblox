@@ -7,9 +7,7 @@ const listarUsuarios = async (req, res) => {
     if (usuario.length === 0) {
       res.status(404).json({ msg: "Nenhum usuario cadastrado no banco." });
     }
-    return res
-      .status(200)
-      .json(usuario);
+    return res.status(200).json(usuario);
   } catch (err) {
     console.log(err);
     return res.status(500).json({ msg: "Erro no servidor." });
@@ -56,16 +54,36 @@ const inserirUsuario = async (req, res) => {
 const atualizarUsuario = async (req, res) => {
   try {
     const id = req.params.id;
-    const { user, password, dataNascimento} = req.body;
-    const usuario = await User.update(
-      { user: user, password: password,dataNascimento: dataNascimento },
-      {
-        where: {
-          id: id,
-        },
-      }
-    );
-    return res.status(201).json({ msg: "Usuario atualizado", id: id});
+    const { user, password, dataNascimento } = req.body;
+
+    const salt = 9;
+
+    const hash = await bcrypt.hash(password, salt);
+
+    const usuarioAtualizado = {};
+
+    if (user) {
+      usuarioAtualizado.user = user;
+    }
+
+    if (password) {
+      usuarioAtualizado.password = hash;
+    }
+
+    if (dataNascimento) {
+      usuarioAtualizado.dataNascimento = dataNascimento;
+    }
+
+    const [ListaAlterada] = await User.update(usuarioAtualizado, {
+      where: {
+        id: id,
+      },
+    });
+
+    if (!ListaAlterada) {
+      return res.status(404).json({ msg: "Usuario não encontrado" });
+    }
+    return res.status(201).json({ msg: "Usuario atualizado", id: id });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ msg: "Erro No servidor" });

@@ -1,21 +1,20 @@
 import express from "express";
 import sequelize from "./db/banco.js";
-import  verifyTokenAndSetUser  from "./middleware/authMiddleware.js";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
+app.use(cors());
 
-app.use(verifyTokenAndSetUser.verifyTokenAndSetUser);
-
-import authRoute  from "./routes/authRoute.js";
+import authRoute from "./routes/authRoute.js";
 import profileRoute from "./routes/profileRoute.js";
 import userRoute from "./routes/userRoute.js";
 
 app.use("/", authRoute);
-app.use("/usuario", userRoute);
 app.use("/login", authRoute);
-app.use("/perfil", profileRoute);
+app.use("/usuario", userRoute);
+app.use(profileRoute);
 
 (async () => {
   try {

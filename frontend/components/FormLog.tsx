@@ -24,7 +24,7 @@ export default function FormLog({ onLoginSucess }: Loginprops) {
       passwordlog: password,
     };
 
-    const response = await fetch("http://192.168.0.103:3000/login", {
+    const response = await fetch("http://192.168.0.101:3000/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(usuario),
